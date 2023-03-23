@@ -11,11 +11,7 @@ export const compile = function (this: Hexo, data: Hexo.extend.RendererData, opt
     if (data?.path) {
       try {
         const result = sass.compile(data.path, config);
-        if (result?.css) {
-          resolve(result.css);
-        } else {
-          reject(new Error('Failed to render SASS'));
-        }
+        resolve(result.css);
       } catch (error) {
         reject(error);
       }

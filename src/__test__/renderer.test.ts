@@ -8,8 +8,7 @@ describe('Function `compile`', () => {
       path: __dirname + '/files/default.scss',
       text: '',
     };
-    const result = await compile.call(hexo, data, {});
-    expect(result).toBe('html body {\n  width: 100%;\n}');
+    await expect(compile.call(hexo, data, {})).resolves.toBe('html body {\n  width: 100%;\n}');
   });
 
   it('compile scss with custom config', async () => {
@@ -19,8 +18,7 @@ describe('Function `compile`', () => {
       path: __dirname + '/files/default.scss',
       text: '',
     };
-    const result = await compile.call(hexo, data, {});
-    expect(result).toBe('html body {\n  width: 100%;\n}');
+    await expect(compile.call(hexo, data, {})).resolves.toBe('html body {\n  width: 100%;\n}');
   });
 
   it('compile scss with custom theme config', async () => {
@@ -31,8 +29,7 @@ describe('Function `compile`', () => {
       path: __dirname + '/files/default.scss',
       text: '',
     };
-    const result = await compile.call(hexo, data, {});
-    expect(result).toBe('html body{width:100%}');
+    await expect(compile.call(hexo, data, {})).resolves.toBe('html body{width:100%}');
   });
 
   it('throw error with invalid scss syntax', async () => {
@@ -46,13 +43,20 @@ describe('Function `compile`', () => {
     await expect(func).rejects.toThrowError();
   });
 
+  it('throw error with Failed to render SASS', async () => {
+    const hexo = new Hexo();
+
+    // @ts-ignore
+    const func = compile.call(hexo, null, {});
+    await expect(func).rejects.toThrowError();
+  });
+
   it('compile sass with default settings', async () => {
     const hexo = new Hexo();
     const data: Hexo.extend.RendererData = {
       path: __dirname + '/files/default.sass',
       text: '',
     };
-    const result = await compile.call(hexo, data, {});
-    expect(result).toBe('html body {\n  width: 100%;\n}');
+    expect(compile.call(hexo, data, {})).resolves.toBe('html body {\n  width: 100%;\n}');
   });
 });
